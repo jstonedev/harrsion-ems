@@ -16,4 +16,9 @@ export default createMuiTheme({
 			main: `${hemsGreen}`,
 		},
 	},
+	typography: {
+		h3: {
+			fontWeight: 300,
+		},
+	},
 });
