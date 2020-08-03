@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Button from "@material-ui/core/Button";
+import { Link } from "react-router-dom";
 
 import logo from "../../assets/img/header-logo-new.png";
 
@@ -68,14 +69,54 @@ export default function Header(props) {
 							value={value}
 							onChange={handleChange}
 							className={classes.tabContainer}>
-							<Tab className={classes.tab} label="Home" />
-							<Tab className={classes.tab} label="About HEMS" />
-							<Tab className={classes.tab} label="Operations" />
-							<Tab className={classes.tab} label="Support HEMS" />
-							<Tab className={classes.tab} label="News & Events" />
-							<Tab className={classes.tab} label="Training" />
-							<Tab className={classes.tab} label="Careers" />
-							<Tab className={classes.tab} label="Contact" />
+							<Tab
+								className={classes.tab}
+								component={Link}
+								to="home"
+								label="Home"
+							/>
+							<Tab
+								className={classes.tab}
+								component={Link}
+								to="about-hems"
+								label="About HEMS"
+							/>
+							<Tab
+								className={classes.tab}
+								component={Link}
+								to="operations"
+								label="Operations"
+							/>
+							<Tab
+								className={classes.tab}
+								component={Link}
+								to="support-hems"
+								label="Support HEMS"
+							/>
+							<Tab
+								className={classes.tab}
+								component={Link}
+								to="news-events"
+								label="News & Events"
+							/>
+							<Tab
+								className={classes.tab}
+								component={Link}
+								to="training"
+								label="Training"
+							/>
+							<Tab
+								className={classes.tab}
+								component={Link}
+								to="careers"
+								label="Careers"
+							/>
+							<Tab
+								className={classes.tab}
+								component={Link}
+								to="contact"
+								label="Contact"
+							/>
 						</Tabs>
 					</Toolbar>
 				</AppBar>
