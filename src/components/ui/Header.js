@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import { makeStyles } from "@material-ui/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import Button from "@material-ui/core/Button";
 
-import logo from "../../assets/img/header-logo.png";
+import logo from "../../assets/img/header-logo-new.png";
 
 function ElevationScroll(props) {
 	const { children } = props;
@@ -21,12 +22,16 @@ function ElevationScroll(props) {
 }
 
 const useStyles = makeStyles((theme) => ({
+	toolbar: {
+		minHeight: "120px",
+	},
 	toolbarMargin: {
 		...theme.mixins.toolbar,
-		marginBottom: "1em",
+		marginBottom: "3.5em",
 	},
 	logo: {
-		height: "4.5em",
+		height: "7.5em",
+		marginLeft: "-7px",
 	},
 	tabContainer: {
 		marginLeft: "auto",
@@ -37,17 +42,32 @@ const useStyles = makeStyles((theme) => ({
 		marginLeft: "25px",
 		minWidth: 10,
 	},
+	button: {
+		borderRadius: "50px",
+		marginLeft: "30px",
+		marginRight: "25px",
+		fontFamily: "Pacifico",
+		fontSize: "1rem",
+	},
 }));
 
 export default function Header(props) {
 	const classes = useStyles();
+	const [value, setValue] = useState(0);
+
+	const handleChange = (e, value) => {
+		setValue(value);
+	};
 	return (
 		<>
 			<ElevationScroll>
 				<AppBar>
-					<Toolbar disableGutters>
+					<Toolbar disableGutters className={classes.toolbar}>
 						<img src={logo} alt="logo" className={classes.logo} />
-						<Tabs className={classes.tabContainer}>
+						<Tabs
+							value={value}
+							onChange={handleChange}
+							className={classes.tabContainer}>
 							<Tab className={classes.tab} label="Home" />
 							<Tab className={classes.tab} label="About HEMS" />
 							<Tab className={classes.tab} label="Operations" />
