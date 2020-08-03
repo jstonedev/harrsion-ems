@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
@@ -31,8 +31,14 @@ const useStyles = makeStyles((theme) => ({
 		marginBottom: "3.5em",
 	},
 	logo: {
-		height: "7.5em",
+		height: "8.5em",
 		marginLeft: "-7px",
+	},
+	logoContainer: {
+		padding: 0,
+		"&:hover": {
+			backgroundColor: "transparent",
+		},
 	},
 	tabContainer: {
 		marginLeft: "auto",
@@ -59,12 +65,40 @@ export default function Header(props) {
 	const handleChange = (e, value) => {
 		setValue(value);
 	};
+
+	useEffect(() => {
+		if (window.location.pathname === "/" && value !== 0) {
+			setValue(0);
+		} else if (window.location.pathname === "/about-hems" && value !== 1) {
+			setValue(1);
+		} else if (window.location.pathname === "/operations" && value !== 2) {
+			setValue(2);
+		} else if (window.location.pathname === "/support-hems" && value !== 3) {
+			setValue(3);
+		} else if (window.location.pathname === "/news-events" && value !== 4) {
+			setValue(4);
+		} else if (window.location.pathname === "/training" && value !== 5) {
+			setValue(5);
+		} else if (window.location.pathname === "/careers" && value !== 6) {
+			setValue(6);
+		} else if (window.location.pathname === "/contact" && value !== 7) {
+			setValue(7);
+		}
+	}, [value]);
+
 	return (
 		<>
 			<ElevationScroll>
 				<AppBar>
 					<Toolbar disableGutters className={classes.toolbar}>
-						<img src={logo} alt="logo" className={classes.logo} />
+						<Button
+							component={Link}
+							to="/"
+							onClick={() => setValue(0)}
+							disableRipple
+							className={classes.logoContainer}>
+							<img src={logo} alt="logo" className={classes.logo} />
+						</Button>
 						<Tabs
 							value={value}
 							onChange={handleChange}
