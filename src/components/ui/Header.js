@@ -7,6 +7,8 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 import logo from "../../assets/img/header-logo-new.png";
 
@@ -48,6 +50,10 @@ const useStyles = makeStyles((theme) => ({
 		...theme.typography.tab,
 		marginLeft: "25px",
 		minWidth: 10,
+		opacity: 0.7,
+		"&:hover": {
+			opacity: 1,
+		},
 	},
 	button: {
 		borderRadius: "50px",
@@ -56,33 +62,117 @@ const useStyles = makeStyles((theme) => ({
 		fontFamily: "Pacifico",
 		fontSize: "1rem",
 	},
+	menu: {
+		backgroundColor: theme.palette.common.red,
+		color: "white",
+	},
+	menuItem: {
+		...theme.typography.tab,
+		opacity: 0.7,
+		"&:hover": {
+			cursor: "pointer",
+			opacity: 1,
+		},
+	},
 }));
 
 export default function Header(props) {
 	const classes = useStyles();
 	const [value, setValue] = useState(0);
+	const [anchorEl, setAnchorEl] = useState(null);
+	const [open, setOpen] = useState(false);
+	const [selectedIndex, setSelectedIndex] = useState(0);
 
 	const handleChange = (e, value) => {
 		setValue(value);
 	};
 
+	const handleClick = (e) => {
+		setAnchorEl(e.currentTarget);
+		setOpen(true);
+	};
+
+	const handleMenuItemClick = (e, i) => {
+		setAnchorEl(null);
+		setOpen(false);
+		setSelectedIndex(i);
+	};
+
+	const handleClose = (e) => {
+		setAnchorEl(null);
+		setOpen(false);
+	};
+
+	const menuOptions = [
+		{ name: "Training", link: "/training" },
+		{ name: "EMS Courses", link: "/ems-courses" },
+		{ name: "AHA Courses", link: "/aha-courses" },
+		{ name: "Course Registration", link: "/course-registration" },
+	];
+
 	useEffect(() => {
-		if (window.location.pathname === "/" && value !== 0) {
-			setValue(0);
-		} else if (window.location.pathname === "/about-hems" && value !== 1) {
-			setValue(1);
-		} else if (window.location.pathname === "/operations" && value !== 2) {
-			setValue(2);
-		} else if (window.location.pathname === "/support-hems" && value !== 3) {
-			setValue(3);
-		} else if (window.location.pathname === "/news-events" && value !== 4) {
-			setValue(4);
-		} else if (window.location.pathname === "/training" && value !== 5) {
-			setValue(5);
-		} else if (window.location.pathname === "/careers" && value !== 6) {
-			setValue(6);
-		} else if (window.location.pathname === "/contact" && value !== 7) {
-			setValue(7);
+		switch (window.location.pathname) {
+			case "/":
+				if (value !== 0) {
+					setValue(0);
+				}
+				break;
+			case "/about-hems":
+				if (value !== 1) {
+					setValue(1);
+				}
+				break;
+			case "/operations":
+				if (value !== 2) {
+					setValue(2);
+				}
+				break;
+			case "/support-hems":
+				if (value !== 3) {
+					setValue(3);
+				}
+				break;
+			case "/news-events":
+				if (value !== 4) {
+					setValue(4);
+				}
+				break;
+			case "/training":
+				if (value !== 5) {
+					setValue(5);
+					setSelectedIndex(0);
+				}
+				break;
+			case "/ems-courses":
+				if (value !== 5) {
+					setValue(5);
+					setSelectedIndex(1);
+				}
+				break;
+			case "/aha-courses":
+				if (value !== 5) {
+					setValue(5);
+					setSelectedIndex(2);
+				}
+				break;
+			case "/course-registration":
+				if (value !== 5) {
+					setValue(5);
+					setSelectedIndex(3);
+				}
+				break;
+			case "/careers":
+				if (value !== 6) {
+					setValue(6);
+				}
+				break;
+			case "/contact":
+				if (value !== 7) {
+					setValue(7);
+				}
+				break;
+			default:
+				break;
 		}
 	}, [value]);
 
@@ -106,7 +196,7 @@ export default function Header(props) {
 							<Tab
 								className={classes.tab}
 								component={Link}
-								to="home"
+								to="/"
 								label="Home"
 							/>
 							<Tab
@@ -134,6 +224,9 @@ export default function Header(props) {
 								label="News & Events"
 							/>
 							<Tab
+								aria-owns={anchorEl ? "training-menu" : undefined}
+								aria-haspopup={anchorEl ? "true" : undefined}
+								onMouseOver={(e) => handleClick(e)}
 								className={classes.tab}
 								component={Link}
 								to="training"
@@ -152,6 +245,30 @@ export default function Header(props) {
 								label="Contact"
 							/>
 						</Tabs>
+						<Menu
+							id="training-menu"
+							anchorEl={anchorEl}
+							open={open}
+							onClose={handleClose}
+							classes={{ paper: classes.menu }}
+							MenuListProps={{ onMouseLeave: handleClose }}
+							elevation={0}>
+							{menuOptions.map((option, i) => (
+								<MenuItem
+									key={i}
+									onClick={(e) => {
+										handleMenuItemClick(e, i);
+										setValue(5);
+										handleClose();
+									}}
+									selected={i === selectedIndex && value === 5}
+									component={Link}
+									to={option.link}
+									classes={{ root: classes.menuItem }}>
+									{option.name}
+								</MenuItem>
+							))}
+						</Menu>
 					</Toolbar>
 				</AppBar>
 			</ElevationScroll>

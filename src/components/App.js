@@ -33,6 +33,21 @@ function App() {
 						component={() => <div>News & Events</div>}
 					/>
 					<Route exact path="/training" component={() => <div>Training</div>} />
+					<Route
+						exact
+						path="/ems-courses"
+						component={() => <div>EMS Courses</div>}
+					/>
+					<Route
+						exact
+						path="/aha-courses"
+						component={() => <div>AHA Courses</div>}
+					/>
+					<Route
+						exact
+						path="/course-registration"
+						component={() => <div>Course Registration</div>}
+					/>
 					<Route exact path="/careers" component={() => <div>Careers</div>} />
 					<Route exact path="/contact" component={() => <div>Contact</div>} />
 				</Switch>
