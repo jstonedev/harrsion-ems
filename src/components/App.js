@@ -24,7 +24,7 @@ function App() {
 					/>
 					<Route
 						exact
-						path="/support-hems"
+						path="/donation"
 						component={() => <div>Support HEMS</div>}
 					/>
 					<Route

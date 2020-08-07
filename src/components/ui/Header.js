@@ -13,7 +13,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 
 import logo from "../../assets/img/header-logo-new.png";
-import banner from "../../assets/img/donation-banner.png";
+import Banner from "./Banner";
 
 function ElevationScroll(props) {
 	const { children } = props;
@@ -40,6 +40,12 @@ const useStyles = makeStyles((theme) => ({
 	toolbarMargin: {
 		...theme.mixins.toolbar,
 		marginBottom: "2.5em",
+		[theme.breakpoints.down("md")]: {
+			marginBottom: "2em",
+		},
+		[theme.breakpoints.down("xs")]: {
+			marginBottom: "1.25em",
+		},
 	},
 	logo: {
 		height: "8em",
@@ -88,15 +94,6 @@ const useStyles = makeStyles((theme) => ({
 			cursor: "pointer",
 			opacity: 1,
 		},
-	},
-	bannerContainer: {
-		marginLeft: "-10px",
-		marginRight: "-10px",
-	},
-	banner: {
-		height: "5em",
-		maxWidth: "100%",
-		width: "1920px",
 	},
 }));
 
@@ -300,9 +297,7 @@ export default function Header(props) {
 				</AppBar>
 			</ElevationScroll>
 			<div className={classes.toolbarMargin} />
-			<div className={classes.bannerContainer}>
-				<img src={banner} alt="banner" className={classes.banner} />
-			</div>
+			<Banner />
 		</>
 	);
 }
