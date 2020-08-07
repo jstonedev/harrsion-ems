@@ -9,8 +9,11 @@ import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
 
 import logo from "../../assets/img/header-logo-new.png";
+import banner from "../../assets/img/donation-banner.png";
 
 function ElevationScroll(props) {
 	const { children } = props;
@@ -26,15 +29,27 @@ function ElevationScroll(props) {
 
 const useStyles = makeStyles((theme) => ({
 	toolbar: {
-		minHeight: "120px",
+		height: "112px",
+		[theme.breakpoints.down("md")]: {
+			height: "98px",
+		},
+		[theme.breakpoints.down("xs")]: {
+			height: "78px",
+		},
 	},
 	toolbarMargin: {
 		...theme.mixins.toolbar,
-		marginBottom: "3.5em",
+		marginBottom: "2.5em",
 	},
 	logo: {
-		height: "8.5em",
+		height: "8em",
 		marginLeft: "-7px",
+		[theme.breakpoints.down("md")]: {
+			height: "7em",
+		},
+		[theme.breakpoints.down("xs")]: {
+			height: "5.5em",
+		},
 	},
 	logoContainer: {
 		padding: 0,
@@ -74,10 +89,21 @@ const useStyles = makeStyles((theme) => ({
 			opacity: 1,
 		},
 	},
+	bannerContainer: {
+		marginLeft: "-10px",
+		marginRight: "-10px",
+	},
+	banner: {
+		height: "5em",
+		maxWidth: "100%",
+		width: "1920px",
+	},
 }));
 
 export default function Header(props) {
 	const classes = useStyles();
+	const theme = useTheme();
+	const matches = useMediaQuery(theme.breakpoints.down("md"));
 	const [value, setValue] = useState(0);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [open, setOpen] = useState(false);
@@ -176,6 +202,86 @@ export default function Header(props) {
 		}
 	}, [value]);
 
+	const tabs = (
+		<>
+			<Tabs
+				value={value}
+				onChange={handleChange}
+				className={classes.tabContainer}>
+				<Tab className={classes.tab} component={Link} to="/" label="Home" />
+				<Tab
+					className={classes.tab}
+					component={Link}
+					to="about-hems"
+					label="About HEMS"
+				/>
+				<Tab
+					className={classes.tab}
+					component={Link}
+					to="operations"
+					label="Operations"
+				/>
+				{/* <Tab
+					className={classes.tab}
+					component={Link}
+					to="support-hems"
+					label="Support HEMS"
+				/> */}
+				<Tab
+					className={classes.tab}
+					component={Link}
+					to="news-events"
+					label="News & Events"
+				/>
+				<Tab
+					aria-owns={anchorEl ? "training-menu" : undefined}
+					aria-haspopup={anchorEl ? "true" : undefined}
+					onMouseOver={(e) => handleClick(e)}
+					className={classes.tab}
+					component={Link}
+					to="training"
+					label="Training"
+				/>
+				<Tab
+					className={classes.tab}
+					component={Link}
+					to="careers"
+					label="Careers"
+				/>
+				<Tab
+					className={classes.tab}
+					component={Link}
+					to="contact"
+					label="Contact"
+				/>
+			</Tabs>
+			<Menu
+				id="training-menu"
+				anchorEl={anchorEl}
+				open={open}
+				onClose={handleClose}
+				classes={{ paper: classes.menu }}
+				MenuListProps={{ onMouseLeave: handleClose }}
+				elevation={0}>
+				{menuOptions.map((option, i) => (
+					<MenuItem
+						key={i}
+						onClick={(e) => {
+							handleMenuItemClick(e, i);
+							setValue(5);
+							handleClose();
+						}}
+						selected={i === selectedIndex && value === 5}
+						component={Link}
+						to={option.link}
+						classes={{ root: classes.menuItem }}>
+						{option.name}
+					</MenuItem>
+				))}
+			</Menu>
+		</>
+	);
+
 	return (
 		<>
 			<ElevationScroll>
@@ -189,90 +295,14 @@ export default function Header(props) {
 							className={classes.logoContainer}>
 							<img src={logo} alt="logo" className={classes.logo} />
 						</Button>
-						<Tabs
-							value={value}
-							onChange={handleChange}
-							className={classes.tabContainer}>
-							<Tab
-								className={classes.tab}
-								component={Link}
-								to="/"
-								label="Home"
-							/>
-							<Tab
-								className={classes.tab}
-								component={Link}
-								to="about-hems"
-								label="About HEMS"
-							/>
-							<Tab
-								className={classes.tab}
-								component={Link}
-								to="operations"
-								label="Operations"
-							/>
-							<Tab
-								className={classes.tab}
-								component={Link}
-								to="support-hems"
-								label="Support HEMS"
-							/>
-							<Tab
-								className={classes.tab}
-								component={Link}
-								to="news-events"
-								label="News & Events"
-							/>
-							<Tab
-								aria-owns={anchorEl ? "training-menu" : undefined}
-								aria-haspopup={anchorEl ? "true" : undefined}
-								onMouseOver={(e) => handleClick(e)}
-								className={classes.tab}
-								component={Link}
-								to="training"
-								label="Training"
-							/>
-							<Tab
-								className={classes.tab}
-								component={Link}
-								to="careers"
-								label="Careers"
-							/>
-							<Tab
-								className={classes.tab}
-								component={Link}
-								to="contact"
-								label="Contact"
-							/>
-						</Tabs>
-						<Menu
-							id="training-menu"
-							anchorEl={anchorEl}
-							open={open}
-							onClose={handleClose}
-							classes={{ paper: classes.menu }}
-							MenuListProps={{ onMouseLeave: handleClose }}
-							elevation={0}>
-							{menuOptions.map((option, i) => (
-								<MenuItem
-									key={i}
-									onClick={(e) => {
-										handleMenuItemClick(e, i);
-										setValue(5);
-										handleClose();
-									}}
-									selected={i === selectedIndex && value === 5}
-									component={Link}
-									to={option.link}
-									classes={{ root: classes.menuItem }}>
-									{option.name}
-								</MenuItem>
-							))}
-						</Menu>
+						{matches ? null : tabs}
 					</Toolbar>
 				</AppBar>
 			</ElevationScroll>
 			<div className={classes.toolbarMargin} />
+			<div className={classes.bannerContainer}>
+				<img src={banner} alt="banner" className={classes.banner} />
+			</div>
 		</>
 	);
 }
