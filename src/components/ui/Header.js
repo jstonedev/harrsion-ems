@@ -11,6 +11,9 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
+import MenuIcon from "@material-ui/icons/Menu";
+import IconButton from "@material-ui/core/IconButton";
 
 import logo from "../../assets/img/header-logo-new.png";
 import Banner from "./Banner";
@@ -95,35 +98,49 @@ const useStyles = makeStyles((theme) => ({
 			opacity: 1,
 		},
 	},
+	drawerIconContainer: {
+		marginLeft: "auto",
+		"&:hover": {
+			backgroundColor: "transparent",
+		},
+	},
+	drawerIcon: {
+		height: "50px",
+		width: "50px",
+		color: theme.palette.common.green,
+	},
 }));
 
 export default function Header(props) {
 	const classes = useStyles();
 	const theme = useTheme();
 	const matches = useMediaQuery(theme.breakpoints.down("md"));
+	const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
+
 	const [value, setValue] = useState(0);
 	const [anchorEl, setAnchorEl] = useState(null);
-	const [open, setOpen] = useState(false);
+	const [openMenu, setOpenMenu] = useState(false);
 	const [selectedIndex, setSelectedIndex] = useState(0);
+	const [openDrawer, setOpenDrawer] = useState(false);
 
-	const handleChange = (e, value) => {
-		setValue(value);
+	const handleChange = (e, newValue) => {
+		setValue(newValue);
 	};
 
 	const handleClick = (e) => {
 		setAnchorEl(e.currentTarget);
-		setOpen(true);
+		setOpenMenu(true);
 	};
 
 	const handleMenuItemClick = (e, i) => {
 		setAnchorEl(null);
-		setOpen(false);
+		setOpenMenu(false);
 		setSelectedIndex(i);
 	};
 
 	const handleClose = (e) => {
 		setAnchorEl(null);
-		setOpen(false);
+		setOpenMenu(false);
 	};
 
 	const menuOptions = [
@@ -150,46 +167,46 @@ export default function Header(props) {
 					setValue(2);
 				}
 				break;
-			case "/support-hems":
+			case "/news-events":
 				if (value !== 3) {
 					setValue(3);
 				}
 				break;
-			case "/news-events":
+			case "/training":
 				if (value !== 4) {
 					setValue(4);
-				}
-				break;
-			case "/training":
-				if (value !== 5) {
-					setValue(5);
 					setSelectedIndex(0);
 				}
 				break;
 			case "/ems-courses":
-				if (value !== 5) {
-					setValue(5);
+				if (value !== 4) {
+					setValue(4);
 					setSelectedIndex(1);
 				}
 				break;
 			case "/aha-courses":
-				if (value !== 5) {
-					setValue(5);
+				if (value !== 4) {
+					setValue(4);
 					setSelectedIndex(2);
 				}
 				break;
 			case "/course-registration":
-				if (value !== 5) {
-					setValue(5);
+				if (value !== 4) {
+					setValue(4);
 					setSelectedIndex(3);
 				}
 				break;
 			case "/careers":
+				if (value !== 5) {
+					setValue(5);
+				}
+				break;
+			case "/contact":
 				if (value !== 6) {
 					setValue(6);
 				}
 				break;
-			case "/contact":
+			case "/support-hems":
 				if (value !== 7) {
 					setValue(7);
 				}
@@ -204,7 +221,8 @@ export default function Header(props) {
 			<Tabs
 				value={value}
 				onChange={handleChange}
-				className={classes.tabContainer}>
+				className={classes.tabContainer}
+				indicatorColor={Tabs.value !== 7 ? "secondary" : "primary"}>
 				<Tab className={classes.tab} component={Link} to="/" label="Home" />
 				<Tab
 					className={classes.tab}
@@ -255,7 +273,7 @@ export default function Header(props) {
 			<Menu
 				id="training-menu"
 				anchorEl={anchorEl}
-				open={open}
+				open={openMenu}
 				onClose={handleClose}
 				classes={{ paper: classes.menu }}
 				MenuListProps={{ onMouseLeave: handleClose }}
@@ -279,6 +297,25 @@ export default function Header(props) {
 		</>
 	);
 
+	const drawer = (
+		<>
+			<SwipeableDrawer
+				disableBackdropTransition={!iOS}
+				disableDiscovery={iOS}
+				open={openDrawer}
+				onClose={() => setOpenDrawer(false)}
+				onOpen={() => setOpenDrawer(true)}>
+				Example Drawer
+			</SwipeableDrawer>
+			<IconButton
+				className={classes.drawerIconContainer}
+				onClick={() => setOpenDrawer(!openDrawer)}
+				disableRipple>
+				<MenuIcon className={classes.drawerIcon} />
+			</IconButton>
+		</>
+	);
+
 	return (
 		<>
 			<ElevationScroll>
@@ -292,7 +329,7 @@ export default function Header(props) {
 							className={classes.logoContainer}>
 							<img src={logo} alt="logo" className={classes.logo} />
 						</Button>
-						{matches ? null : tabs}
+						{matches ? drawer : tabs}
 					</Toolbar>
 				</AppBar>
 			</ElevationScroll>
