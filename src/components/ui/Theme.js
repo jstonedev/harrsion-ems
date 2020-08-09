@@ -1,6 +1,6 @@
 import { createMuiTheme } from "@material-ui/core/styles";
 
-const hemsRed = "#58291f";
+const hemsRed = "#800000";
 const hemsGreen = "#fbc002";
 
 export default createMuiTheme({
