@@ -9,13 +9,7 @@ import banner from "../../assets/img/donation-banner.png";
 
 const useStyles = makeStyles((theme) => ({
 	bannerContainer: {
-		marginLeft: "-17px",
-		marginRight: "-16px",
-		marginTop: "-6px",
-		[theme.breakpoints.down("md")]: {
-			marginTop: "-20px",
-		},
-		[theme.breakpoints.down("xs")]: {},
+		paddingTop: "10px",
 	},
 	banner: {
 		height: "7em",
@@ -32,15 +26,17 @@ export default function Banner(props) {
 	const matches = useMediaQuery(theme.breakpoints.down("md"));
 	return (
 		<>
-			{matches ? null : (
-				<Button
-					component={Link}
-					to="/donation"
-					disableRipple
-					className={classes.bannerContainer}>
-					<img className={classes.banner} src={banner} alt="donation-banner" />
-				</Button>
-			)}
+			<div className={classes.bannerContainer}>
+				{matches ? null : (
+					<Button component={Link} to="/donation" disableRipple>
+						<img
+							className={classes.banner}
+							src={banner}
+							alt="donation-banner"
+						/>
+					</Button>
+				)}
+			</div>
 		</>
 	);
 }
