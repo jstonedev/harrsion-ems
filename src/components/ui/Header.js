@@ -124,7 +124,12 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: theme.palette.common.green,
 	},
 	drawerItemSelected: {
-		opacity: 1,
+		"& .MuiListItemText-root": {
+			opacity: 1,
+		},
+	},
+	appbar: {
+		zIndex: theme.zIndex.modal + 1,
 	},
 }));
 
@@ -161,77 +166,63 @@ export default function Header(props) {
 	};
 
 	const menuOptions = [
-		{ name: "Training", link: "/training" },
-		{ name: "EMS Courses", link: "/ems-courses" },
-		{ name: "AHA Courses", link: "/aha-courses" },
-		{ name: "Course Registration", link: "/course-registration" },
+		{
+			name: "Training",
+			link: "/training",
+			activeIndex: 4,
+			selectedIndex: 0,
+			ariaOwns: anchorEl ? "training-menu" : undefined,
+			ariaHasPopup: anchorEl ? "true" : undefined,
+			mouseOver: (event) => handleClick(event),
+		},
+		{
+			name: "EMS Courses",
+			link: "/ems-courses",
+			activeIndex: 4,
+			selectedIndex: 1,
+		},
+		{
+			name: "AHA Courses",
+			link: "/aha-courses",
+			activeIndex: 4,
+			selectedIndex: 2,
+		},
+		{
+			name: "Course Registration",
+			link: "/course-registration",
+			activeIndex: 4,
+			selectedIndex: 3,
+		},
+	];
+
+	const routes = [
+		{ name: "Home", link: "/", activeIndex: 0 },
+		{ name: "About HEMS", link: "/about-hems", activeIndex: 1 },
+		{ name: "Operations", link: "/operations", activeIndex: 2 },
+		{ name: "News & Events", link: "/news-events", activeIndex: 3 },
+		{ name: "Training", link: "/training", activeIndex: 4 },
+		{ name: "Careers", link: "/careers", activeIndex: 5 },
+		{ name: "Contact", link: "/contact", activeIndex: 6 },
+		// { name: "Donate", link: "/donation", activeIndex: 7 },
 	];
 
 	useEffect(() => {
-		switch (window.location.pathname) {
-			case "/":
-				if (value !== 0) {
-					setValue(0);
-				}
-				break;
-			case "/about-hems":
-				if (value !== 1) {
-					setValue(1);
-				}
-				break;
-			case "/operations":
-				if (value !== 2) {
-					setValue(2);
-				}
-				break;
-			case "/news-events":
-				if (value !== 3) {
-					setValue(3);
-				}
-				break;
-			case "/training":
-				if (value !== 4) {
-					setValue(4);
-					setSelectedIndex(0);
-				}
-				break;
-			case "/ems-courses":
-				if (value !== 4) {
-					setValue(4);
-					setSelectedIndex(1);
-				}
-				break;
-			case "/aha-courses":
-				if (value !== 4) {
-					setValue(4);
-					setSelectedIndex(2);
-				}
-				break;
-			case "/course-registration":
-				if (value !== 4) {
-					setValue(4);
-					setSelectedIndex(3);
-				}
-				break;
-			case "/careers":
-				if (value !== 5) {
-					setValue(5);
-				}
-				break;
-			case "/contact":
-				if (value !== 6) {
-					setValue(6);
-				}
-				break;
-			case "/support-hems":
-				if (value !== 7) {
-					setValue(7);
-				}
-				break;
-			default:
-				break;
-		}
-	}, [value]);
+		[...menuOptions, ...routes].forEach((route) => {
+			switch (window.location.pathname) {
+				case `${route.link}`:
+					if (value !== route.activeIndex) {
+						setValue(route.activeIndex);
+						if (route.selectedIndex && route.selectedIndex !== selectedIndex) {
+							setSelectedIndex(route.selectedIndex);
+						}
+					}
+					break;
+
+				default:
+					break;
+			}
+		});
+	}, [value, menuOptions, selectedIndex, routes]);
 
 	const tabs = (
 		<>
@@ -240,6 +231,18 @@ export default function Header(props) {
 				onChange={handleChange}
 				className={classes.tabContainer}
 				indicatorColor={Tabs.value !== 7 ? "secondary" : "primary"}>
+				{/* {routes.map((route, index) => (
+					<Tab
+						aria-owns={route.ariaOwns}
+						aria-haspopup={route.ariaPopup}
+						onMouseOver={route.mouseOver}
+						className={classes.tab}
+						component={Link}
+						to={route.link}
+						label={route.name}
+					/>
+				))} */}
+
 				<Tab className={classes.tab} component={Link} to="/" label="Home" />
 				<Tab
 					className={classes.tab}
@@ -253,12 +256,6 @@ export default function Header(props) {
 					to="operations"
 					label="Operations"
 				/>
-				{/* <Tab
-					className={classes.tab}
-					component={Link}
-					to="support-hems"
-					label="Support HEMS"
-				/> */}
 				<Tab
 					className={classes.tab}
 					component={Link}
@@ -294,19 +291,21 @@ export default function Header(props) {
 				onClose={handleClose}
 				classes={{ paper: classes.menu }}
 				MenuListProps={{ onMouseLeave: handleClose }}
-				elevation={0}>
+				elevation={0}
+				style={{ zIndex: 1302 }}
+				keepMounted>
 				{menuOptions.map((option, i) => (
 					<MenuItem
 						key={i}
+						component={Link}
+						to={option.link}
+						classes={{ root: classes.menuItem }}
 						onClick={(e) => {
 							handleMenuItemClick(e, i);
 							setValue(5);
 							handleClose();
 						}}
-						selected={i === selectedIndex && value === 5}
-						component={Link}
-						to={option.link}
-						classes={{ root: classes.menuItem }}>
+						selected={i === selectedIndex && value === 4}>
 						{option.name}
 					</MenuItem>
 				))}
@@ -323,150 +322,34 @@ export default function Header(props) {
 				onClose={() => setOpenDrawer(false)}
 				onOpen={() => setOpenDrawer(true)}
 				classes={{ paper: classes.drawer }}>
+				<div className={classes.toolbarMargin} />
 				<List disablePadding>
+					{routes.map((route) => (
+						<ListItem
+							key={`${route}${route.activeIndex}`}
+							divider
+							button
+							component={Link}
+							to={route.link}
+							selected={value === route.activeIndex}
+							classes={{ selected: classes.drawerItemSelected }}
+							onClick={() => {
+								setOpenDrawer(false);
+								setValue(route.activeIndex);
+							}}>
+							<ListItemText className={classes.drawerItem} disableTypography>
+								{route.name}
+							</ListItemText>
+						</ListItem>
+					))}
+
 					<ListItem
 						divider
 						button
-						component={Link}
-						to="/"
-						onClick={() => {
-							setOpenDrawer(false);
-							setValue(0);
+						classes={{
+							root: classes.drawerItemDonate,
+							selected: classes.drawerItemSelected,
 						}}
-						selected={value === 0}>
-						<ListItemText
-							disableTypography
-							className={
-								value === 0
-									? [classes.drawerItem, classes.drawerItemSelected]
-									: classes.drawerItem
-							}>
-							Home
-						</ListItemText>
-					</ListItem>
-					<ListItem
-						divider
-						button
-						component={Link}
-						to="/about-hems"
-						onClick={() => {
-							setValue(0);
-						}}
-						selected={value === 1}>
-						<ListItemText
-							disableTypography
-							className={
-								value === 1
-									? [classes.drawerItem, classes.drawerItemSelected]
-									: classes.drawerItem
-							}>
-							About HEMS
-						</ListItemText>
-					</ListItem>
-					<ListItem
-						divider
-						button
-						component={Link}
-						to="/operations"
-						onClick={() => {
-							setOpenDrawer(false);
-							setValue(2);
-						}}
-						selected={value === 2}>
-						<ListItemText
-							disableTypography
-							className={
-								value === 2
-									? [classes.drawerItem, classes.drawerItemSelected]
-									: classes.drawerItem
-							}>
-							Operations
-						</ListItemText>
-					</ListItem>
-					<ListItem
-						divider
-						button
-						component={Link}
-						to="/news-events"
-						onClick={() => {
-							setOpenDrawer(false);
-							setValue(3);
-						}}
-						selected={value === 3}>
-						<ListItemText
-							disableTypography
-							className={
-								value === 3
-									? [classes.drawerItem, classes.drawerItemSelected]
-									: classes.drawerItem
-							}>
-							News & Events
-						</ListItemText>
-					</ListItem>
-					<ListItem
-						divider
-						button
-						component={Link}
-						to="/training"
-						onClick={() => {
-							setOpenDrawer(false);
-							setValue(4);
-						}}
-						selected={value === 4}>
-						<ListItemText
-							disableTypography
-							className={
-								value === 4
-									? [classes.drawerItem, classes.drawerItemSelected]
-									: classes.drawerItem
-							}>
-							Training
-						</ListItemText>
-					</ListItem>
-					<ListItem
-						divider
-						button
-						component={Link}
-						to="/careers"
-						onClick={() => {
-							setOpenDrawer(false);
-							setValue(5);
-						}}
-						selected={value === 5}>
-						<ListItemText
-							disableTypography
-							className={
-								value === 5
-									? [classes.drawerItem, classes.drawerItemSelected]
-									: classes.drawerItem
-							}>
-							Careers
-						</ListItemText>
-					</ListItem>
-					<ListItem
-						divider
-						button
-						component={Link}
-						to="/contact"
-						onClick={() => {
-							setOpenDrawer(false);
-							setValue(6);
-						}}
-						selected={value === 6}>
-						<ListItemText
-							disableTypography
-							className={
-								value === 6
-									? [classes.drawerItem, classes.drawerItemSelected]
-									: classes.drawerItem
-							}>
-							Contact
-						</ListItemText>
-					</ListItem>
-					<ListItem
-						divider
-						button
-						className={classes.drawerItemDonate}
 						component={Link}
 						to="/donation"
 						onClick={() => {
@@ -474,18 +357,14 @@ export default function Header(props) {
 							setValue(7);
 						}}
 						selected={value === 7}>
-						<ListItemText
-							disableTypography
-							className={
-								value === 7
-									? [classes.drawerItem, classes.drawerItemSelected]
-									: classes.drawerItem
-							}>
+						<ListItemText disableTypography className={classes.drawerItem}>
 							Donate Now
 						</ListItemText>
 					</ListItem>
 				</List>
 			</SwipeableDrawer>
+
+			{/* drawer button  */}
 			<IconButton
 				className={classes.drawerIconContainer}
 				onClick={() => setOpenDrawer(!openDrawer)}
@@ -498,7 +377,7 @@ export default function Header(props) {
 	return (
 		<>
 			<ElevationScroll>
-				<AppBar>
+				<AppBar position="fixed" className={classes.appbar}>
 					<Toolbar disableGutters className={classes.toolbar}>
 						<Button
 							component={Link}
