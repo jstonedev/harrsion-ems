@@ -69,7 +69,12 @@ export default function Footer({
 			<Grid container justify="center" className={classes.mainContainer}>
 				<Grid item className={classes.gridItem}>
 					<Grid container direction="column" spacing={2}>
-						<Grid item component={Link} to="/" className={classes.footerLink}>
+						<Grid
+							item
+							component={Link}
+							to="/"
+							className={classes.footerLink}
+							onClick={() => setValue(0)}>
 							Home
 						</Grid>
 					</Grid>
@@ -80,7 +85,8 @@ export default function Footer({
 							item
 							component={Link}
 							to="/about-hems"
-							className={classes.footerLink}>
+							className={classes.footerLink}
+							onClick={() => setValue(1)}>
 							About HEMS
 						</Grid>
 					</Grid>
@@ -91,35 +97,40 @@ export default function Footer({
 							item
 							component={Link}
 							to="/operations"
-							className={classes.footerLink}>
+							className={classes.footerLink}
+							onClick={() => setValue(2)}>
 							Operations
 						</Grid>
 						<Grid
 							item
 							component={Link}
 							to="/operations"
-							className={classes.footerLink}>
+							className={classes.footerLink}
+							onClick={() => setValue(2)}>
 							Medical Standbys
 						</Grid>
 						<Grid
 							item
 							component={Link}
 							to="/operations"
-							className={classes.footerLink}>
+							className={classes.footerLink}
+							onClick={() => setValue(2)}>
 							Emergency Planning
 						</Grid>
 						<Grid
 							item
 							component={Link}
 							to="/operations"
-							className={classes.footerLink}>
+							className={classes.footerLink}
+							onClick={() => setValue(2)}>
 							Emergency Prevention
 						</Grid>
 						<Grid
 							item
 							component={Link}
 							to="/operations"
-							className={classes.footerLink}>
+							className={classes.footerLink}
+							onClick={() => setValue(2)}>
 							File of Life
 						</Grid>
 					</Grid>
@@ -130,7 +141,8 @@ export default function Footer({
 							item
 							component={Link}
 							to="/news-events"
-							className={classes.footerLink}>
+							className={classes.footerLink}
+							onClick={() => setValue(3)}>
 							News & Events
 						</Grid>
 					</Grid>
@@ -141,28 +153,44 @@ export default function Footer({
 							item
 							component={Link}
 							to="/training"
-							className={classes.footerLink}>
+							className={classes.footerLink}
+							onClick={() => {
+								setValue(4);
+								setSelectedIndex(0);
+							}}>
 							Training
 						</Grid>
 						<Grid
 							item
 							component={Link}
 							to="/ems-courses"
-							className={classes.footerLink}>
+							className={classes.footerLink}
+							onClick={() => {
+								setValue(4);
+								setSelectedIndex(1);
+							}}>
 							EMS Courses
 						</Grid>
 						<Grid
 							item
 							component={Link}
 							to="/aha-courses"
-							className={classes.footerLink}>
+							className={classes.footerLink}
+							onClick={() => {
+								setValue(4);
+								setSelectedIndex(2);
+							}}>
 							AHA Courses
 						</Grid>
 						<Grid
 							item
 							component={Link}
 							to="/course-registration"
-							className={classes.footerLink}>
+							className={classes.footerLink}
+							onClick={() => {
+								setValue(4);
+								setSelectedIndex(3);
+							}}>
 							Course Registration
 						</Grid>
 					</Grid>
@@ -173,21 +201,24 @@ export default function Footer({
 							item
 							component={Link}
 							to="/careers"
-							className={classes.footerLink}>
+							className={classes.footerLink}
+							onClick={() => setValue(5)}>
 							Careers
 						</Grid>
 						<Grid
 							item
 							component={Link}
 							to="/careers"
-							className={classes.footerLink}>
+							className={classes.footerLink}
+							onClick={() => setValue(5)}>
 							Apply Now
 						</Grid>
 						<Grid
 							item
 							component={Link}
 							to="/careers"
-							className={classes.footerLink}>
+							className={classes.footerLink}
+							onClick={() => setValue(5)}>
 							Explorer Program
 						</Grid>
 					</Grid>
@@ -198,7 +229,8 @@ export default function Footer({
 							item
 							component={Link}
 							to="/contact"
-							className={classes.footerLink}>
+							className={classes.footerLink}
+							onClick={() => setValue(6)}>
 							Contact
 						</Grid>
 					</Grid>
