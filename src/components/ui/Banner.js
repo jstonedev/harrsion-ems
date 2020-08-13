@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
-import banner from "../../assets/img/donation-banner.png";
+import banner from "../../assets/img/banner/donation-banner.png";
 
 const useStyles = makeStyles((theme) => ({
 	bannerContainer: {

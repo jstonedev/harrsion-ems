@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import theme from "./ui/Theme";
 import Header from "./ui/Header";
 import Footer from "./ui/Footer";
+import Home from "../pages/Home";
 
 function App() {
 	const [selectedIndex, setSelectedIndex] = useState(0);
@@ -22,7 +23,11 @@ function App() {
 					<Route
 						exact
 						path="/"
-						component={() => <div style={{ height: "2000px" }}>Home</div>}
+						component={() => (
+							<div style={{ height: "2000px" }}>
+								<Home />
+							</div>
+						)}
 					/>
 					<Route
 						exact

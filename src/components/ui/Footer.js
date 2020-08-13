@@ -4,10 +4,10 @@ import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
 import { Link } from "react-router-dom";
 
-import footerImg from "../../assets/img/large-footer-slash.png";
-import facebook from "../../assets/img/facebook.svg";
-import twitter from "../../assets/img/twitter.svg";
-import instagram from "../../assets/img/instagram.svg";
+import footerImg from "../../assets/img/footer/large-footer-slash.png";
+import facebook from "../../assets/icons/facebook.svg";
+import twitter from "../../assets/icons/twitter.svg";
+import instagram from "../../assets/icons/instagram.svg";
 
 const useStyles = makeStyles((theme) => ({
 	footer: {
