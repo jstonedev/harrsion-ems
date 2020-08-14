@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { ThemeProvider } from "@material-ui/styles";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import theme from "./ui/Theme";
 import Header from "./ui/Header";
 import Footer from "./ui/Footer";
-import Home from "../pages/Home";
+import { Home } from "../pages/Home";
 
 function App() {
 	const [selectedIndex, setSelectedIndex] = useState(0);
